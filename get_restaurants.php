@@ -32,12 +32,13 @@ foreach($result_crous as $row) {
 
 
 // --- 3. Récupération des données Restaurant_1 ---
-$sql_resto = "SELECT Nom_Restaurant, Type_Cuisine, Latitude, Longitude FROM restaurant_1";
+$sql_resto = "SELECT * FROM restaurant_1";
 $stmt_resto = $db->query($sql_resto); // Exécution simple de la requête
 $result_resto = $stmt_resto->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($result_resto as $row) {
     $data[] = [
+        'id' => $row['Position'],
         'name' => $row['Nom_Restaurant'],
         'type' => 'Privé - ' . $row['Type_Cuisine'],
         'lat' => $row['Latitude'],

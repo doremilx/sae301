@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     // 1. Initialiser la carte Leaflet
-    // Correction ici : utiliser 'map' (l'ID) au lieu de '#map' (sélecteur CSS)
     const centerLat = 48.840;
     const centerLon = 2.585;
 
-    const mymap = L.map('map').setView([centerLat, centerLon], 15); // Ligne corrigée
+    const mymap = L.map('map').setView([centerLat, centerLon], 15);
 
     // 2. Ajouter le fond de carte (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                let popupContent = `<b>${restaurant.name}</b><br>${restaurant.type}`;
+                let popupContent = `<a href="page_restaurant.php?id_crous=${restaurant.id} "> <br> <b>${restaurant.name}</b><br>${restaurant.type}`;
                 let marker = L.marker([lat, lon]);
 
                 // Ici, vous pouvez ajouter une icône spécifique si vous voulez
