@@ -8,46 +8,41 @@ $db = new PDO('mysql:host=localhost;dbname=lin_atable;port=3306;charset=utf8', '
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-$data = [];
+$data = []; // Tableau pour stocker toutes les données des restaurants
 
 // --- 2. Récupération des données CROUS ---
-$sql_crous = "SELECT Nom, Type, Géolocalisation FROM crous";
-$stmt_crous = $db->query($sql_crous); // Exécution simple de la requête
-
-// PDO::FETCH_ASSOC permet de récupérer les résultats sous forme de tableau associatif
+$sql_crous = "
+    SELECT * FROM crous";
+$stmt_crous = $db->query($sql_crous); 
 $result_crous = $stmt_crous->fetchAll(PDO::FETCH_ASSOC); 
 
 foreach($result_crous as $row) {
-    // Le séparateur est souvent une virgule avec un espace (ou juste une virgule)
-    $coords = explode(',', $row['Géolocalisation']);
-    if (count($coords) == 2) {
-        $data[] = [
-            'name' => $row['Nom'],
-            'type' => 'CROUS - ' . $row['Type'],
-            'lat' => trim($coords[0]),
-            'lon' => trim($coords[1])
-        ];
-    }
+    $data[] = [
+        'id_crous' => $row['id_crous'],
+        'name' => $row['name'],
+        'type' => 'CROUS - ' . $row['type'],
+        'lat' => floatval($row['latitude']), // On s'assure que c'est bien un nombre float
+        'lon' => floatval($row['longitude'])
+    ];
 }
 
 
 // --- 3. Récupération des données Restaurant_1 ---
-$sql_resto = "SELECT * FROM restaurant_1";
-$stmt_resto = $db->query($sql_resto); // Exécution simple de la requête
+$sql_resto = "
+    SELECT * FROM restaurant_1";
+$stmt_resto = $db->query($sql_resto); 
 $result_resto = $stmt_resto->fetchAll(PDO::FETCH_ASSOC);
 
 foreach($result_resto as $row) {
     $data[] = [
-        'id' => $row['Position'],
-        'name' => $row['Nom_Restaurant'],
+        'id_resto' => $row['id_resto'],
+        'name' => $row['name'],
         'type' => 'Privé - ' . $row['Type_Cuisine'],
-        'lat' => $row['Latitude'],
-        'lon' => $row['Longitude']
+        'lat' => floatval($row['latitude']), // On s'assure que c'est bien un nombre float
+        'lon' => floatval($row['longitude'])
     ];
 }
 
-// 4. Retourner les données en JSON
+// --- 4. Retourner les données en JSON, donc le fichier actuel et_restaurant.php c'est un fichier .json en gros, on oublie le php pour un moment haha---
 echo json_encode($data);
-
-// Pas besoin de fermer la connexion PDO, elle se ferme automatiquement.
 ?>

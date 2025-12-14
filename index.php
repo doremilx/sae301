@@ -29,63 +29,75 @@ require_once ('connectbdd.php');
 
 <div class='filtre'>
     <h1>Explorer</h1>
-    <div class='filtreButtons'></div>
+    <div class='filtreButtons'>
+        <button class="filtre-btn active" data-filter="all">Tri automatique <span class="dropdown-arrow"></span></button>
+        
+        <button class="filtre-btn" data-filter="crous">Resto Crous</button>
+        
+        <button class="filtre-btn" data-filter="ouvert">Ouvert en ce moment</button>
+        
+        <button class="filtre-btn" data-filter="pmr">Accessibilité PMR</button>
+        
+        <button class="filtre-btn" data-filter="favoris">Mes favoris</button> 
+    </div>
     <div class='filtreCartes'>
+        
+        <?php
+        // 2. Récupération des données CROUS
+        $sql = "SELECT * FROM crous";
+        $stmt = $pdo->query($sql);
+        $crous = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        ?>
+        
+        <?php foreach ($crous as $carteCrous): ?> 
+            <a href="page_crous.php?id_crous=<?php echo $carteCrous['id_crous'];?>"
+                class="restaurant-carte" 
+               data-type="crous" 
+               data-pmr="<?php echo $carteCrous['PMR']; ?>"
+               data-marker-id="crous_<?php echo $carteCrous['id_crous'];?>"
+               >
+                <div class='CarteTest'>
+                    <div class='carteImg'></div>
+                    <div class='Info'>
+                        <h2> <?php echo $carteCrous['name'] ?> </h2> <div class='petiteInfo'>
 
-       
+                            <p> <?php  echo $carteCrous['adresse']  ?> </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <?php endforeach; ?>
 
         <?php
-require_once ('connectbdd.php'); 
+        // 3. Récupération des données restaurant_1
+        $sql2 = "SELECT * FROM restaurant_1";
+        $stmt = $pdo->query($sql2);
+        $restaurant = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+        ?>
 
-$sql = "SELECT * FROM crous";
-$stmt = $pdo->query($sql);
-$crous = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
-<!-- Coucou Timothy, je te mens pas je me suis perdu car j'ai rajouté les balises a apèrs, donc niveau positionnement tout ca ca marche pas trop, mais quand y'avait pas de a, ca marchait très bien au niveau des positionnements haha  -->
- <?php foreach ($crous as $carteCrous): ?> 
-    <a href="page_crous.php?id_crous=<?php echo $carteCrous['id_crous'];?>">
-   <div class='CarteTest'>
-            <div class='carteImg'></div>
-            <div class='Info'>
-            <h2> <?php echo $carteCrous['Nom'] ?> </h2>
-            <div class='petiteInfo'>
-                <p>ouvert - ferme à 23h30</p>
-                <p>beaucoup de monde</p>
-                <p> <?php  echo $carteCrous['adresse']  ?> </p>
-            </div>
-            </div>
-        </div>
-        </a>
-<?php endforeach; ?>
-
-<?php
-$sql2 = "SELECT * FROM restaurant_1";
-$stmt = $pdo->query($sql2);
-$restaurant = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
+        <?php foreach ($restaurant as $carteRestaurant): ?> 
+            <a href="page_restaurant.php?id_resto=<?php echo $carteRestaurant['id_resto'];?>" class="restaurant-carte" 
+               data-type="prive" 
+               data-pmr="<?php echo $carteRestaurant['PMR']; ?>"
+               data-marker-id="prive_<?php echo $carteRestaurant['id_resto'];?>">
 
 
-<?php foreach ($restaurant as $carteRestaurant): ?> 
-    <a href="page_restaurant.php?id_restaurant=<?php echo $carteRestaurant['Position'];?>">
-   <div class='CarteTest'>
-            <div class='carteImg'></div>
-            <div class='Info'>
-            <h2> <?php echo $carteRestaurant['Nom_Restaurant'] ?> </h2>
-            <div class='petiteInfo'>
-                <p>ouvert - ferme à 23h30</p>
-                <p>beaucoup de monde</p>
-                <p> <?php  echo $carteRestaurant['Adresse']  ?> </p>
-            </div>
-            </div>
-        </div>
-        </a>
-<?php endforeach; ?>
+                <div class='CarteTest'>
+                    <div class='carteImg'></div>
+                    <div class='Info'>
+                        <h2> <?php echo $carteRestaurant['name'] ?> </h2> <div class='petiteInfo'>
 
+                            <p> <?php  echo $carteRestaurant['Adresse']  ?> </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        <?php endforeach; ?>
 
     </div>
 </div>
 
 <div id="map"></div>
-
-
 
 <script src="script.js"> </script>
 
