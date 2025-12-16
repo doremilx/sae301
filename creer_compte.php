@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $motdepasse = $_POST['motdepasse'];
         $motdepassehash = password_hash($motdepasse, PASSWORD_DEFAULT);
 
-        //Vérifier si le mail existe déjà
+        
         $sql = "SELECT * FROM users WHERE login = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$login]);
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Insertion en base
+        
         $sql = "INSERT INTO users (login, motdepasse, lastname, firstname)
                 VALUES (?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
