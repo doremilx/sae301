@@ -21,7 +21,7 @@ require_once ('connectbdd.php');
     <div class="right">
         <ul>
             <li><a href="">Explorer</a></li>
-            <li> <a href="">Mon profil</a></li>
+            <li> <a href="profile.php">Mon profil</a></li>
             <li><a href="" class='izlyButton'>Mon izly</a></li> 
         </ul>
     </div>

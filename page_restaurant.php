@@ -31,13 +31,19 @@ if ($resto_id) {
         echo "<p>Type de cuisine : " . htmlspecialchars($restaurant_detail['Type_Cuisine']) . "</p>";
         echo "<p>Adresse : " . htmlspecialchars($restaurant_detail['Adresse']) . "</p>";
         echo "<p>Note : " . htmlspecialchars($restaurant_detail['Note']) . "/5</p>";
+        echo "<p>Numéro de téléphone : ". $restaurant_detail['Telephone'] . "</p>";
+        echo "<p>Gamme de prix: ". $restaurant_detail['Gamme_Prix'] . " </p>";
+        echo "<p>Accessibilité PMR : " . ($restaurant_detail['PMR'] ? 'Oui' : 'Non') . "</p>";
+         echo "<p>Sur place : " . ($restaurant_detail['Sur_Place'] ? 'Oui' : 'Non') . "</p>";
+          echo "<p>A emporter : " . ($restaurant_detail['A_Emporter'] ? 'Oui' : 'Non') . "</p>";
+           echo "<p>Livraison : " . ($restaurant_detail['Livraison'] ? 'Oui' : 'Non') . "</p>";
+        echo "<p> Site Web :</p> <a href='" . htmlspecialchars($restaurant_detail['Site_Web']) . "' target='_blank'> ". $restaurant_detail['Site_Web'] . " </a> <br><br>"; ;
 
-        echo "<a href='" . htmlspecialchars($restaurant_detail['Site_Web']) . "' target='_blank'> ". $restaurant_detail['Site_Web'] . " </a>";
-
-/* 
+        
         echo "<img src='" . htmlspecialchars($restaurant_detail['photo_facade']) . "' alt='Image de " . htmlspecialchars($restaurant_detail['name']) . "' style='max-width:300px;' />";
 
-        echo "<img src='" . htmlspecialchars($restaurant_detail['photo_menu']) . "' alt='Menu de " . htmlspecialchars($restaurant_detail['name']) . "' style='max-width:300px;' />"; */
+        if (!empty($restaurant_detail['photo_menu'])) {
+        echo "<img src='" . htmlspecialchars($restaurant_detail['photo_menu']) . "' alt='Menu de " . htmlspecialchars($restaurant_detail['name']) . "' style='max-width:300px;' />";}
 
 
     } else {
