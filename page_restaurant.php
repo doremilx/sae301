@@ -18,7 +18,7 @@ $resto_id = filter_input(INPUT_GET, 'id_resto', FILTER_VALIDATE_INT);
 if ($resto_id) {
     
     // Requête pour la table des restaurants privés
-    $sql = "SELECT * FROM restaurant_1 WHERE id_resto = ?"; 
+    $sql = "SELECT * FROM restaurant WHERE id_resto = ?"; 
     $stmt = $pdo->prepare($sql);
 
     $stmt->execute([$resto_id]); 
@@ -31,6 +31,14 @@ if ($resto_id) {
         echo "<p>Type de cuisine : " . htmlspecialchars($restaurant_detail['Type_Cuisine']) . "</p>";
         echo "<p>Adresse : " . htmlspecialchars($restaurant_detail['Adresse']) . "</p>";
         echo "<p>Note : " . htmlspecialchars($restaurant_detail['Note']) . "/5</p>";
+
+        echo "<a href='" . htmlspecialchars($restaurant_detail['Site_Web']) . "' target='_blank'> ". $restaurant_detail['Site_Web'] . " </a>";
+
+/* 
+        echo "<img src='" . htmlspecialchars($restaurant_detail['photo_facade']) . "' alt='Image de " . htmlspecialchars($restaurant_detail['name']) . "' style='max-width:300px;' />";
+
+        echo "<img src='" . htmlspecialchars($restaurant_detail['photo_menu']) . "' alt='Menu de " . htmlspecialchars($restaurant_detail['name']) . "' style='max-width:300px;' />"; */
+
 
     } else {
         echo "<h1>Erreur</h1>";

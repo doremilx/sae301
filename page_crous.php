@@ -1,9 +1,4 @@
-<?php 
-// Assurez-vous d'inclure la connexion ici aussi !
-require_once ('connectbdd.php'); 
-
-// Assurez-vous que la variable $pdo est définie dans connectbdd.php
-?>
+<?php require_once ('connectbdd.php'); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -40,7 +35,54 @@ if ($crous_id) {
         echo "<p>Adresse : " . htmlspecialchars($crous_detail['adresse']) . "</p>";
         echo "<p>Accessibilité PMR : " . ($crous_detail['PMR'] ? 'Oui' : 'Non') . "</p>";
         echo "<p>Moyens de paiement : " . htmlspecialchars($crous_detail['paiement']) . "</p>";
+       
+        echo "<img src='" . htmlspecialchars($crous_detail['photo']) . "' alt='Image de " . htmlspecialchars($crous_detail['name']) . "' style='max-width:300px;' />";
+
+
+/* Système des horaires DEBUT*/
+
+// 1. Définir la correspondance Jour (basé sur votre BDD : 0=Lundi, 1=Mardi, etc.)
+$jours_semaine = [
+    0 => 'Lundi', 
+    1 => 'Mardi', 
+    2 => 'Mercredi', 
+    3 => 'Jeudi', 
+    4 => 'Vendredi',
+    5 => 'Samedi', // Non utilisé dans votre échantillon, mais bonne pratique
+    6 => 'Dimanche' // Non utilisé dans votre échantillon
+];
+
+// 2. Requête simplifiée pour récupérer tous les horaires de ce CROUS
+$sql2 = "SELECT * FROM horaires_crous WHERE crous_id = ? ORDER BY jour ASC"; 
+$stmt2 = $pdo->prepare($sql2);
+
+// 3. Exécuter la requête avec le bon statement
+$stmt2->execute([$crous_id]);
+$horaires = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+echo "<h2>Horaires d'ouverture :</h2>";
+echo "<ul>";
+
+if ($horaires) {
+    // 4. Boucler sur tous les résultats (un résultat = un jour)
+    foreach ($horaires as $horaire) {
+
+        $heure_ouverture = substr($horaire['ouvert_a'], 0, 5); 
+        $heure_fermeture = substr($horaire['ferme_a'], 0, 5);
+        // Récupérer le nom du jour, sinon affiche 'Jour Inconnu'
+        $nom_jour = $jours_semaine[$horaire['jour']] ?? 'Jour Inconnu';
         
+        echo "<li>$nom_jour : " . htmlspecialchars($heure_ouverture) . " - " . htmlspecialchars($heure_fermeture) . "</li>";
+    }
+} else {
+    echo "<li>Aucun horaire trouvé pour ce restaurant.</li>";
+}
+
+echo "</ul>";
+
+/* Système horaires FIN */
+
+
 
     } else {
         echo "<h1>Erreur</h1>";

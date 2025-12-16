@@ -29,7 +29,7 @@ foreach($result_crous as $row) {
 
 // --- 3. Récupération des données Restaurant_1 ---
 $sql_resto = "
-    SELECT * FROM restaurant_1";
+    SELECT * FROM restaurant";
 $stmt_resto = $db->query($sql_resto); 
 $result_resto = $stmt_resto->fetchAll(PDO::FETCH_ASSOC);
 

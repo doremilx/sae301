@@ -69,8 +69,8 @@ require_once ('connectbdd.php');
         <?php endforeach; ?>
 
         <?php
-        // 3. Récupération des données restaurant_1
-        $sql2 = "SELECT * FROM restaurant_1";
+        // 3. Récupération des données restaurant
+        $sql2 = "SELECT * FROM restaurant";
         $stmt = $pdo->query($sql2);
         $restaurant = $stmt->fetchAll(PDO::FETCH_ASSOC); 
         ?>
@@ -95,6 +95,7 @@ require_once ('connectbdd.php');
         <?php endforeach; ?>
 
     </div>
+    <a href="">Mentions légales</a>
 </div>
 
 <div id="map"></div>
