@@ -83,6 +83,32 @@ echo "</ul>";
 /* Système horaires FIN */
 
 
+/* Système de chat live, je vais pleurer -rémi */
+
+echo '<div id="chat-container">';
+echo '<h2>Chat Live</h2>';
+echo '<div id="chat-messages">';
+
+// Charger les messages existants depuis la base de données
+$sql3 = "SELECT * FROM messages WHERE crous_id = ? ORDER BY timestamp ASC";
+$stmt3 = $pdo->prepare($sql3);
+$stmt3->execute([$crous_id]);
+$messages = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+foreach ($messages as $message) {
+    echo '<div class="chat-message">';
+    echo '<strong>' . htmlspecialchars($message['username']) . ':</strong> ';
+    echo '<span>' . htmlspecialchars($message['message']) . '</span>';
+    echo '</div>';
+}
+echo '</div>';
+echo '<input type="text" id="user-input" placeholder="Tapez votre message..." />';
+echo '<button onclick="sendMessage()">Envoyer</button>';
+echo '</div>';
+
+/* FIN Système de chat live FIN, je vais pleurer -rémi */
+
+
+
 
     } else {
         echo "<h1>Erreur</h1>";
