@@ -5,6 +5,10 @@ if (!isset($_SESSION['login'])) {
     header('Location: connexion.php');
     exit();
 }
+
+$user = $_SESSION['login'];
+
+include 'connectbdd.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,7 +18,7 @@ if (!isset($_SESSION['login'])) {
     <title>Profil</title>
 </head>
 <body>
-    <h1>Bienvenue sur votre profil, <?php echo htmlspecialchars($_SESSION['login']); ?> !</h1>
+    <h1><?= htmlspecialchars($user['lastname'] . " " . $user['firstname']); ?></h1>
     <p>Voici les informations de votre profil.</p>
     <a href="logout.php">Se déconnecter</a>
 </body>
