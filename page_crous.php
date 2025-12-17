@@ -87,22 +87,23 @@ echo "</ul>";
 
 echo '<div id="chat-container">';
 echo '<h2>Chat Live</h2>';
-echo '<div id="chat-messages">';
+echo '<form id="chat-messages" target="chat-messages" method="post">';
 
 // Charger les messages existants depuis la base de données
-$sql3 = "SELECT * FROM messages WHERE crous_id = ? ORDER BY timestamp ASC";
+$sql3 = "SELECT * FROM message_crous WHERE crous_id = ? ORDER BY timestamp ASC";
 $stmt3 = $pdo->prepare($sql3);
 $stmt3->execute([$crous_id]);
 $messages = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 foreach ($messages as $message) {
     echo '<div class="chat-message">';
-    echo '<strong>' . htmlspecialchars($message['username']) . ':</strong> ';
-    echo '<span>' . htmlspecialchars($message['message']) . '</span>';
+    echo '<strong>' . htmlspecialchars($message['user_id']) . ':</strong> ';
+    echo '<span>' . htmlspecialchars($message['contenu_crous']) . '</span>';
     echo '</div>';
 }
-echo '</div>';
+echo '</div>'; 
 echo '<input type="text" id="user-input" placeholder="Tapez votre message..." />';
 echo '<button onclick="sendMessage()">Envoyer</button>';
+echo '</form>';
 echo '</div>';
 
 /* FIN Système de chat live FIN, je vais pleurer -rémi */

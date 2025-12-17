@@ -5,7 +5,19 @@ if (!isset($_SESSION['login'])) {
     header('Location: connexion.php');
     exit();
 }
+
+$user = $_SESSION['login'];
+
+include 'connectbdd.php';
+
+$login = $_SESSION['login'];
+
+$sql = "SELECT * FROM users WHERE login = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$login]);
+$user = $stmt->fetch();
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,8 +26,14 @@ if (!isset($_SESSION['login'])) {
     <title>Profil</title>
 </head>
 <body>
-    <h1>Bienvenue sur votre profil, <?php echo htmlspecialchars($_SESSION['login']); ?> !</h1>
+    <h1>Bienvenue sur votre profil</h1>
     <p>Voici les informations de votre profil.</p>
+
+    <strong>Nom :</strong> <?php echo htmlspecialchars($user['lastname']); ?></li>
+<strong>Prénom :</strong> <?php echo htmlspecialchars($user['firstname']); ?></li>
+
+    </ul>
+
     <a href="logout.php">Se déconnecter</a>
 </body>
 </html>
