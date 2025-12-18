@@ -6,9 +6,9 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 
-$user = $_SESSION['login'];
-
 include 'connectbdd.php';
+
+$login = $_SESSION['login'];
 
 $sql = "SELECT * FROM users WHERE login = ?";
 $stmt = $pdo->prepare($sql);
@@ -25,13 +25,28 @@ $user = $stmt->fetch();
 </head>
 <body>
     <h1><?= htmlspecialchars($user['lastname'] . " " . $user['firstname']); ?></h1>
-    <p>Voici les informations de votre profil.</p>
-
-    <strong>Nom :</strong> <?php echo htmlspecialchars($user['lastname']); ?></li>
-<strong>Prénom :</strong> <?php echo htmlspecialchars($user['firstname']); ?></li>
-
-    </ul>
-
+    <p><?=  htmlspecialchars($user['login']) ?></p>
     <a href="logout.php">Se déconnecter</a>
+    <hr>
+    <h2>Mon Tableau de bord CROUS</h2>
+
+    <h3>Informations</h3>
+    <hr>
+    
+    <form action="">
+        <p>Modifier mes informations</p>
+        <label for="nom">Nom</label>
+        <input type="text" id="nom">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom">
+        <p>Changer mon mot de passe</p>
+        <label for="ancienmdp">Mot de passe actuel</label>
+        <input type="text" id="ancienmdp">
+        <label for="nouveaumdp">Nouveau mot de passe</label>
+        <input type="text" id="nouveaumdp">
+        <br>
+        <button>Sauvegarder les modifications</button>
+    </form>
+
 </body>
 </html>
