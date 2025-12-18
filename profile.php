@@ -9,7 +9,13 @@ if (!isset($_SESSION['login'])) {
 $user = $_SESSION['login'];
 
 include 'connectbdd.php';
+
+$sql = "SELECT * FROM users WHERE login = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$login]);
+$user = $stmt->fetch();
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,6 +26,12 @@ include 'connectbdd.php';
 <body>
     <h1><?= htmlspecialchars($user['lastname'] . " " . $user['firstname']); ?></h1>
     <p>Voici les informations de votre profil.</p>
+
+    <strong>Nom :</strong> <?php echo htmlspecialchars($user['lastname']); ?></li>
+<strong>Prénom :</strong> <?php echo htmlspecialchars($user['firstname']); ?></li>
+
+    </ul>
+
     <a href="logout.php">Se déconnecter</a>
 </body>
 </html>
