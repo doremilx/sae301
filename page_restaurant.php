@@ -10,6 +10,7 @@ require_once ('connectbdd.php');
     <link rel="stylesheet" href="style/styles.css" />
 </head>
 <body>
+<?php include 'header.php'; ?>
 <?php
 // 2. Récupérer l'ID de manière sécurisée depuis l'URL
 $resto_id = filter_input(INPUT_GET, 'id_resto', FILTER_VALIDATE_INT);
