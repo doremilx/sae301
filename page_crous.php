@@ -85,25 +85,45 @@ echo "</ul>";
 
 /* Système de chat live, je vais pleurer -rémi */
 
-echo '<div id="chat-container">';
-echo '<h2>Chat Live</h2>';
-echo '<form id="chat-messages" target="chat-messages" method="post">';
 
-// Charger les messages existants depuis la base de données
-$sql3 = "SELECT * FROM message_crous WHERE crous_id = ? ORDER BY timestamp ASC";
-$stmt3 = $pdo->prepare($sql3);
-$stmt3->execute([$crous_id]);
-$messages = $stmt3->fetchAll(PDO::FETCH_ASSOC);
-foreach ($messages as $message) {
-    echo '<div class="chat-message">';
-    echo '<strong>' . htmlspecialchars($message['user_id']) . ':</strong> ';
-    echo '<span>' . htmlspecialchars($message['contenu_crous']) . '</span>';
-    echo '</div>';
-}
-echo '</div>'; 
-echo '<input type="text" id="user-input" placeholder="Tapez votre message..." />';
-echo '<button onclick="sendMessage()">Envoyer</button>';
-echo '</form>';
+
+session_start(); 
+
+echo '<div id="chat-container" style="margin-top: 30px; border: 1px solid #ccc; padding: 15px;">';
+    echo '<h2>Chat Live</h2>';
+    
+    // Affichage des messages existants
+    echo '<div id="display-messages" style="height: 300px; overflow-y: scroll; margin-bottom: 10px; background: #f9f9f9; padding: 10px;">';
+    
+    // Jointure pour avoir le prénom de l'auteur du message
+    $sql3 = "SELECT m.*, u.* FROM message_crous m 
+             JOIN users u ON m.user_id = u.id 
+             WHERE m.crous_id = ? 
+             ORDER BY m.date ASC";
+    $stmt3 = $pdo->prepare($sql3);
+    $stmt3->execute([$crous_id]);
+    $messages = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($messages as $message) {
+        echo '<div class="chat-message" style="margin-bottom: 10px;">';
+        echo '<strong>' . htmlspecialchars($message['firstname']) . ' ' . htmlspecialchars($message['lastname']). ' :</strong> ';
+        echo '<span>' . htmlspecialchars($message['contenu_crous']) . '</span>';
+        echo '<small style="display:block; color:gray; font-size:0.8em;">' . $message['date'] . '</small>';
+        echo '</div>';
+    }
+    echo '</div>'; 
+
+    // Formulaire d'envoi
+    if (isset($_SESSION['id'])) {
+        echo '<form action="chatlive.php" method="post">';
+            // Champ caché pour envoyer l'ID du CROUS
+            echo '<input type="hidden" name="id_crous" value="' . $crous_id . '" />';
+            echo '<input type="text" name="message" placeholder="Tapez votre message..." required style="width: 80%;" />';
+            echo '<button type="submit">Envoyer</button>';
+        echo '</form>';
+    } else {
+        echo '<p><i>Veuillez vous <a href="profile.php">connecter</a> pour participer au chat.</i></p>';
+    }
 echo '</div>';
 
 /* FIN Système de chat live FIN, je vais pleurer -rémi */

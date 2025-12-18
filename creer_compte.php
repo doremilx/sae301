@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$login, $motdepassehash, $nom, $prenom]);
 
         echo "Compte créé avec succès";
-        echo "<br><a href='login.php'>Retour à la page de connexion</a>";
+        echo "<br><a href='connexion.php'>Retour à la page de connexion</a>";
         exit;
     }
 
