@@ -115,7 +115,7 @@ echo '<div id="chat-container" style="margin-top: 30px; border: 1px solid #ccc; 
 
     // Formulaire d'envoi
     if (isset($_SESSION['id'])) {
-        echo '<form action="chatlive.php" method="post">';
+        echo '<form action="chatlive_crous.php" method="post">';
             // Champ caché pour envoyer l'ID du CROUS
             echo '<input type="hidden" name="id_crous" value="' . $crous_id . '" />';
             echo '<input type="text" name="message" placeholder="Tapez votre message..." required style="width: 80%;" />';
