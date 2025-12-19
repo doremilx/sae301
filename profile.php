@@ -24,6 +24,7 @@ $user = $stmt->fetch();
     <title>Profil</title>
 </head>
 <body>
+<?php include 'header.php'; ?>
     <h1><?= htmlspecialchars($user['lastname'] . " " . $user['firstname']); ?></h1>
     <p><?=  htmlspecialchars($user['login']) ?></p>
     <a href="logout.php">Se déconnecter</a>

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style/styles.css" />
 </head>
 <body>
+<?php include 'header.php'; ?>
 <?php
 // 1. Récupérer l'ID de manière sécurisée (Le paramètre est bien 'id_crous' dans l'index.php corrigé)
 $crous_id = filter_input(INPUT_GET, 'id_crous', FILTER_VALIDATE_INT);
