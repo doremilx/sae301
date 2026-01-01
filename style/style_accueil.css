@@ -1,0 +1,102 @@
+:root {
+    --bg-dark: #001f2d;
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --accent: #00a8ff;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+}
+
+/* Layout */
+.main-wrapper {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 350px;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 10;
+    box-shadow: 10px 0 20px rgba(0,0,0,0.3);
+}
+
+.filtreButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.filtre-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #ccc;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.filtre-btn.active {
+    background: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.filtreCartes {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Cartes */
+.restaurant-carte {
+    display: block;
+    background: var(--card-bg);
+    margin-bottom: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.CarteTest {
+    padding: 10px;
+    display: flex;
+    gap: 15px;
+}
+
+.carteImg {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    background-color: #333; 
+    flex-shrink: 0;
+    overflow: hidden;
+    background-size: cover; 
+    background-position: center;
+}
+
+.Info h2 { margin: 0; font-size: 14px; }
+.Info p { margin: 5px 0 0; font-size: 12px; color: #aaa; }
+
+/* Map */
+#map {
+    flex: 1;
+    height: 100%;
+}
+
+/* Custom Marker */
+.custom-dot {
+    background: white;
+    border: 3px solid var(--bg-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}

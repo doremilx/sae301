@@ -1,147 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
     const markersMap = new Map();
 
-    // 1. Initialiser la carte Leaflet
-    const centerLat = 48.840;
-    const centerLon = 2.585;
+    // 1. Initialiser la carte avec un style sombre
+    const mymap = L.map('map', { zoomControl: false }).setView([48.840, 2.585], 15);
 
-    const mymap = L.map('map').setView([centerLat, centerLon], 15);
-
-    // 2. Ajouter le fond de carte (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(mymap);
+    attribution: '© OpenStreetMap contributors'
+}).addTo(mymap);
 
-    // 3. Récupérer les données des restaurants via PHP/Ajax
+    L.control.zoom({ position: 'topright' }).addTo(mymap);
+
+    // 2. Icône personnalisée (goutte blanche de la maquette)
+    const whiteIcon = L.divIcon({
+        className: 'custom-dot',
+        iconSize: [15, 15]
+    });
+
+    // 3. Charger les marqueurs
     fetch('get_restaurants.php')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                console.error("Erreur de BDD:", data.error);
-                alert(`Erreur de BDD: ${data.error}`);
-                return;
-            }
+            data.forEach(res => {
+                const lat = parseFloat(res.latitude || res.lat);
+                const lon = parseFloat(res.longitude || res.lon);
+                if (isNaN(lat) || isNaN(lon)) return;
 
-            // 4. Parcourir les données et ajouter un marqueur pour chaque restaurant
-            data.forEach(restaurant => {
-                const lat = parseFloat(restaurant.latitude || restaurant.lat); // latitude ou lat
-                const lon = parseFloat(restaurant.longitude || restaurant.lon); // longitude ou lon
-
-                if (isNaN(lat) || isNaN(lon)) {
-                    console.warn(`Coordonnées invalides pour ${restaurant.name}`);
-                    return;
-                }
-
-                let restaurantId = '';
-                let linkParamName = '';
-                let targetPage = 'page_restaurant.php'; // Page par défaut (pour les privés)
-                let uniqueId = ''; // Clé de la Map
-
-                if (restaurant.id_crous) {
-                    restaurantId = restaurant.id_crous;
-                    linkParamName = `id_crous`;
-                    targetPage = 'page_crous.php';
-                    uniqueId = `crous_${restaurant.id_crous}`; // Clé unique
-                } else if (restaurant.id_resto) {
-                    restaurantId = restaurant.id_resto;
-                    linkParamName = `id_resto`;
-                    uniqueId = `prive_${restaurant.id_resto}`; // Clé unique
-                } else {
-                    console.warn(`ID non trouvé pour le restaurant: ${restaurant.name}`);
-                    return;
-                }
-
-                // Construire le contenu de la popup
-                let popupContent = `
-                    <a href="${targetPage}?${linkParamName}=${restaurantId}"> 
-                        <b>${restaurant.name}</b><br>
-                        ${restaurant.type}
-                    </a>
-                `;
-
-                let marker = L.marker([lat, lon]);
-                marker.bindPopup(popupContent).addTo(mymap);
-
-                // 5. Stocker le marqueur dans la Map pour le retrouver par la suite
-                markersMap.set(uniqueId, marker);
+                const id = res.id_crous ? `crous_${res.id_crous}` : `prive_${res.id_resto}`;
+                const marker = L.marker([lat, lon], { icon: whiteIcon }).addTo(mymap);
+                
+                marker.bindPopup(`<b>${res.name}</b>`);
+                markersMap.set(id, marker);
             });
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération ou du traitement des données:', error);
-            alert('Impossible de charger les données des restaurants. Vérifiez la connexion BDD et la console.');
         });
 
+    // 4. Filtrage dynamique
+    const buttons = document.querySelectorAll('.filtre-btn');
+    const cards = document.querySelectorAll('.restaurant-carte');
 
-    // --- Logique de filtrage des cartes et des marqueurs ---
-
-    const filterButtons = document.querySelectorAll('.filtre-btn');
-    const restaurantCards = document.querySelectorAll('.restaurant-carte');
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Gestion de la classe active
-            filterButtons.forEach(btn => btn.classList.remove('active'));
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            buttons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
+            
+            const filter = this.dataset.filter;
 
-            const filterValue = this.getAttribute('data-filter');
+            cards.forEach(card => {
+                const type = card.dataset.type;
+                const pmr = card.dataset.pmr;
+                const mId = card.dataset.markerId;
+                const marker = markersMap.get(mId);
 
-            restaurantCards.forEach(card => {
-                const cardType = card.getAttribute('data-type');
-                const cardPMR = card.getAttribute('data-pmr');
-                const cardMarkerId = card.getAttribute('data-marker-id'); // Récupère l'ID unique
+                let show = (filter === 'all') || 
+                           (filter === 'crous' && type === 'crous') || 
+                           (filter === 'pmr' && pmr === '1');
 
-                let shouldShow = false;
-
-                if (filterValue === 'all') {
-                    shouldShow = true;
-                } else if (filterValue === 'crous') {
-                    shouldShow = (cardType === 'crous');
-                } else if (filterValue === 'pmr') {
-                    shouldShow = (cardPMR === '1');
-                } else if (filterValue === 'ouvert') {
-                    // Utilise la classe is-open ajoutée par PHP si vous avez implémenté la logique d'ouverture
-                    shouldShow = card.classList.contains('is-open');
-                } else if (filterValue === 'favoris') {
-                    // Logique favoris
-                    shouldShow = true; // Placeholder
-                }
-
-                // 1. Affichage ou masquage de la carte (listes)
-                if (shouldShow) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-
-                // 2. Affichage ou masquage du marqueur (carte Leaflet)
-                const marker = markersMap.get(cardMarkerId);
+                card.style.display = show ? 'block' : 'none';
                 if (marker) {
-                    // Utiliser setOpacity(0) pour masquer et setOpacity(1) pour afficher
-                    if (shouldShow) {
-                        marker.setOpacity(1);
-                        marker.setZIndexOffset(1000); // S'assurer que les marqueurs visibles sont au-dessus
-                    } else {
-                        marker.setOpacity(0);
-                        marker.setZIndexOffset(0); // Mettre les marqueurs masqués en arrière-plan
-                    }
+                    if (show) mymap.addLayer(marker); 
+                    else mymap.removeLayer(marker);
                 }
             });
         });
     });
-
-    // Déclencher le filtre 'all' au chargement pour tout afficher par défaut
-    const defaultFilter = document.querySelector('.filtre-btn[data-filter="all"]');
-    if (defaultFilter) {
-        // Un petit délai pour s'assurer que les marqueurs sont bien tous chargés dans la Map
-        setTimeout(() => {
-            defaultFilter.click();
-        }, 500);
-    }
 });
