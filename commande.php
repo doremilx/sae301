@@ -13,13 +13,18 @@ $id_crous_url = filter_input(INPUT_GET, 'id_crous', FILTER_VALIDATE_INT);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commande Crous</title>
+    <link rel="stylesheet" href="style/style_commande.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+     <?php include 'header.php'; ?>
     <h1>Réserver mon repas</h1>
-    <h1>Formule Crous</h1>
-    <h2>Comprend 1 Plat Principal, 1 Accompagnement, et 1 Dessert</h2>
+    <h2>Formule Crous</h1>
+    <h3>Comprend 1 Plat Principal, 1 Accompagnement, et 1 Dessert</h2>
     <form action="" method="POST">
+        <div class="select-commande">
         <select name="id_plat" id="select_plat">
             <option value="">Plat Principal</option>
 <?php
@@ -53,8 +58,10 @@ $stmtDessert = $pdo->query("SELECT * FROM produits_crous WHERE categorie = 'Pât
                 endforeach;
 ?>
         </select>
-<br><br>
-
+</div>
+<div class="options-commande">
+    <div class='ou_quand'>
+<H1>Où et quand ?</H1>
 <!-- Système avec la date du jour  -->
 <label for="date_repas">Date du repas :</label>
 <input type="date" 
@@ -81,8 +88,9 @@ $stmtDessert = $pdo->query("SELECT * FROM produits_crous WHERE categorie = 'Pât
     }
     ?>
 </select>
+</div>
 <div id="ma-commande">
-    <h3>Ma commande</h3>
+    <h1>Ma commande</h1>
     <div id="recap-formule">
         <p><strong>Formule :</strong> <span id="display-formule">Aucune</span></p>
         <ul>
@@ -93,6 +101,7 @@ $stmtDessert = $pdo->query("SELECT * FROM produits_crous WHERE categorie = 'Pât
     </div>
     <hr>
     <p>Total à payer : <span id="total-prix">0.00</span>€</p>
+</div>
 </div>
     </form>
 
