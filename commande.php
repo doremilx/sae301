@@ -117,7 +117,7 @@ function updateRecap() {
 
     if(selectPlat.value && selectAcc.value && selectDessert.value) {
         document.getElementById('display-formule').textContent = "Formule CROUS complète";
-        document.getElementById('total-prix').textContent = "3.30"; // Prix étudiant CROUS
+        document.getElementById('total-prix').textContent = "3.30"; 
     }
 }
 
