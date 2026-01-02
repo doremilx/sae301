@@ -80,13 +80,15 @@ if ($horaires) {
 }
 
 echo "</ul>";
+?>
+<!-- Système horaires FIN -->
 
-/* Système horaires FIN */
+<a href="commande.php?id_crous=<?php echo $crous_id; ?>">Commander</a>
 
 
-/* Système de chat live, je vais pleurer -rémi */
+<!-- Système de chat live, je vais pleurer -rémi  -->
 
-
+<?php
 
 session_start(); 
 
