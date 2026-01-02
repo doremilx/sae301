@@ -1,68 +1,69 @@
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: rgba(0, 31, 45, 0.7);
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: rgba(0, 31, 45, 0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo-container img {
-    height: 40px;
+  height: 40px;
 }
 
 nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 20px;
-    border-radius: 30px;
-    margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 30px;
+  margin: 0;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 0.95em;
-    opacity: 0.8;
-    transition: 0.3s;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95em;
+  opacity: 0.8;
+  transition: 0.3s;
 }
 
-nav ul li a:hover, nav ul li a.active {
-    opacity: 1;
-    border-bottom: 2px solid white;
+nav ul li a:hover,
+nav ul li a.active {
+  opacity: 1;
+  border-bottom: 2px solid white;
 }
 
 .izlyButton::before {
-    content: none;
+  content: none;
 }
 
 .izlyButton {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 6px 15px;
-    border-radius: 20px;
-    transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 15px;
+  border-radius: 20px;
+  transition: background 0.3s;
 }
 
 .izlyButton:hover {
-    background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .izlyButton i {
-    font-size: 0.9em;
-    transform: rotate(45deg);
+  font-size: 0.9em;
+  transform: rotate(45deg);
 }
